@@ -67,7 +67,7 @@ def count_bytes(txt):
     return byte_counts
     
 def on_submit(ev):
-    txt = document['text'].text
+    txt = document['text'].value
     counts = count_bytes(txt)
     document['counts'].html = ''
     for page,length in counts.items():
