@@ -62,7 +62,7 @@ for page in supported_pages:
 def count_bytes(txt):
     byte_counts = {"UTF-8":len(txt.encode('utf-8')), "UTF-16":len(txt)*2}
     for page in codepages:
-        if all(c in page for c in txt):
+        if all(c in codepages[page] for c in txt):
             byte_counts[page] = len(txt)
     return byte_counts
     
