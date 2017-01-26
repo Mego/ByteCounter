@@ -75,6 +75,6 @@ def on_submit(ev):
     document['counts'].html = ''
     for page, data in counts.items():
         length, raw = data
-        document['counts'].html += '<b>{0}:</b> {1} bytes ({2})<br>'.format(page.upper(), length, ' '.join("{0:02X}".format(c) for c in data))
+        document['counts'].html += '<b>{0}:</b> {1} bytes ({2})<br>'.format(page.upper(), length, ' '.join("{0:02X}".format(c) for c in raw))
         
 document['submit'].bind('click', on_submit)
