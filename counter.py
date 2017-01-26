@@ -96,7 +96,7 @@ for page in supported_pages:
                 codepages[page] += b'\x00'.decode(page)
         
 def count_bytes(txt):
-    byte_counts = {"UTF-8":len(txt.encode('utf-8')), "UTF-16":len(txt)*2}
+    byte_counts = {"UTF-8":("UTF-8",len(txt.encode('utf-8')),txt.encode('utf-8')), "UTF-16":("UTF-16",len(txt.encode('utf-16')),txt.encode('utf-16'))}
     for page in codepages:
         try:
             byte_counts[page] = (page, len(txt), txt.encode(page) if page not in ("cp437","ascii","jelly") else encode(txt, page))
