@@ -55,6 +55,9 @@ codepages = {
     "jelly": jellytable
 }
 
+def encode(txt, page):
+  return bytes([codepages[page].index(c) for c in txt])
+
 for page in supported_pages:
     if page not in codepages:
         codepages[page] = bytes(range(256)).decode(page)
@@ -63,14 +66,15 @@ def count_bytes(txt):
     byte_counts = {"UTF-8":len(txt.encode('utf-8')), "UTF-16":len(txt)*2}
     for page in codepages:
         if all(c in codepages[page] for c in txt):
-            byte_counts[page] = len(txt)
+            byte_counts[page] = (len(txt), txt.encode(page) if page in supported_pages else encode(txt, page))
     return byte_counts
     
 def on_submit(ev):
     txt = document['text'].value
     counts = count_bytes(txt)
     document['counts'].html = ''
-    for page,length in counts.items():
-        document['counts'].html += '<b>{0}:</b> {1} bytes<br>'.format(page.upper(), length)
+    for page, data in counts.items():
+        length, raw = data
+        document['counts'].html += '<b>{0}:</b> {1} bytes ({2})<br>'.format(page.upper(), length, ' '.join("{0:02X}".format(c) for c in data))
         
 document['submit'].bind('click', on_submit)
