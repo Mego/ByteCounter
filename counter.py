@@ -66,15 +66,14 @@ def count_bytes(txt):
     byte_counts = {"UTF-8":len(txt.encode('utf-8')), "UTF-16":len(txt)*2}
     for page in codepages:
         if all(c in codepages[page] for c in txt):
-            byte_counts[page] = (len(txt), txt.encode(page) if page not in ("cp437","ascii","jelly") else encode(txt, page))
+            byte_counts[page] = (page, len(txt), txt.encode(page) if page not in ("cp437","ascii","jelly") else encode(txt, page))
     return byte_counts
     
 def on_submit(ev):
     txt = document['text'].value
     counts = count_bytes(txt)
     document['counts'].html = ''
-    for page, data in counts.items():
-        length, raw = data
+    for page, length, raw in counts.values():
         document['counts'].html += '<b>{0}:</b> {1} bytes ({2})<br>'.format(page.upper(), length, ' '.join("{0:02X}".format(c) for c in raw))
         
 document['submit'].bind('click', on_submit)
