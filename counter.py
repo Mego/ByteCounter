@@ -66,7 +66,7 @@ def count_bytes(txt):
     byte_counts = {"UTF-8":len(txt.encode('utf-8')), "UTF-16":len(txt)*2}
     for page in codepages:
         if all(c in codepages[page] for c in txt):
-            byte_counts[page] = (len(txt), txt.encode(page) if page in supported_pages else encode(txt, page))
+            byte_counts[page] = (len(txt), txt.encode(page) if page not in ("cp437","ascii","jelly") else encode(txt, page))
     return byte_counts
     
 def on_submit(ev):
